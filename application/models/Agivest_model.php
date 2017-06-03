@@ -89,7 +89,7 @@ Class Agivest_model extends CI_Model {
 									fytambak.location, 
 									fyinvest.statusInvest, 
 									fyinvest.money,
-									fyinvest.idInvest,
+									fyinvest.id_invest,
 									fyinvest.ordered, 
 									fyinvest.expired
 									from fytambak,fyinvest
@@ -110,7 +110,7 @@ Class Agivest_model extends CI_Model {
 									fytambak.location, 
 									fyinvest.statusInvest, 
 									fyinvest.money,
-									fyinvest.idInvest,
+									fyinvest.id_invest,
 									fyinvest.ordered, 
 									fyinvest.expired
 									from fytambak,fyinvest

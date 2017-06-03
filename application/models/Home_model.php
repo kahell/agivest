@@ -18,14 +18,14 @@ Class Home_model extends CI_Model{
 	}
 
 	public function countUser(){
-		$this->db->select('idLogin');
+		$this->db->select('id_identitas');
 		$result = $this->db->count_all_results('fyidentitas');
 		return $result;
 	}
 
 	public function countLuas(){
 		$this->db->select_sum('spaciousPond');
-		$this->db->where("statusTambak = 'A' and statusInvest = 'A'");
+		$this->db->where("fytambak.statusTambak = 'A' and fyinvest.statusInvest = 'A' ");
 		$result = $this->db->get('fytambak,fyinvest')->row()->spaciousPond;
 		return $result;
 	}
@@ -41,6 +41,7 @@ Class Home_model extends CI_Model{
 		$result = $this->db->count_all_results('fytambak');
 		return $result;
 	}
+
 	public function email($username){
 		$result = $this->db->query("select email from fyidentitas where username = '$username'");
 		return $result;

@@ -49,7 +49,7 @@ class Investor extends CI_Controller {
                     $data['expired'] = $row->expired;
                     $data['pictureFishFarmer'] = $row->pictureFishFarmer;
                     $data['fishFarmer'] = $row->fishFarmer;
-                    $data['idInvest'] = $row->idInvest;
+                    $data['id_invest'] = $row->id_invest;
                     //Delete Otomatis
                     $expired1 = $data['expired'];
                     $expired2 = explode('-', $expired1);
@@ -59,7 +59,7 @@ class Investor extends CI_Controller {
                     //Cek Tahun
                     if ($expired2[5] < $currentDate2[2]) {
                         $uname = $data['namaAdmin'];
-                        $deleteInvest = $this->Agivest_model->deleteData("fyinvest","username ='$uname' AND idInvest ='$row->idInvest'");
+                        $deleteInvest = $this->Agivest_model->deleteData("fyinvest","username ='$uname' AND id_invest ='$row->id_invest'");
                     }elseif($expired2[3] < $currentDate2[0]) { //Cek Tanggal
                         //Cek Bulan
                         if ($expired2[4] <= $currentDate2[1]) {
@@ -68,10 +68,10 @@ class Investor extends CI_Controller {
 
                             }else{
                                 $uname = $data['namaAdmin'];
-                                $deleteInvest = $this->Agivest_model->deleteData("fyinvest","username ='$uname' AND idInvest ='$row->idInvest'");
+                                $deleteInvest = $this->Agivest_model->deleteData("fyinvest","username ='$uname' AND id_invest ='$row->id_invest'");
                             }
                             $uname = $data['namaAdmin'];
-                            $deleteInvest = $this->Agivest_model->deleteData("fyinvest","username ='$uname' AND idInvest ='$row->idInvest'");
+                            $deleteInvest = $this->Agivest_model->deleteData("fyinvest","username ='$uname' AND id_invest ='$row->id_invest'");
                         }
                     }
               }
@@ -151,7 +151,7 @@ class Investor extends CI_Controller {
                     $data['expired'] = $row->expired;
                     $data['pictureFishFarmer'] = $row->pictureFishFarmer;
                     $data['fishFarmer'] = $row->fishFarmer;
-                    $data['idInvest'] = $row->idInvest;
+                    $data['id_invest'] = $row->id_invest;
                     //Delete Otomatis
                     $expired1 = $data['expired'];
                     $expired2 = explode('-', $expired1);
@@ -161,7 +161,7 @@ class Investor extends CI_Controller {
                     //Cek Tahun
                     if ($expired2[5] < $currentDate2[2]) {
                         $uname = $data['namaAdmin'];
-                        $deleteInvest = $this->Agivest_model->deleteData("fyinvest","username ='$uname' AND idInvest ='$row->idInvest'");
+                        $deleteInvest = $this->Agivest_model->deleteData("fyinvest","username ='$uname' AND id_invest ='$row->id_invest'");
                     }elseif($expired2[3] < $currentDate2[0]) { //Cek Tanggal
                         //Cek Bulan
                         if ($expired2[4] <= $currentDate2[1]) {
@@ -170,10 +170,10 @@ class Investor extends CI_Controller {
 
                             }else{
                                 $uname = $data['namaAdmin'];
-                                $deleteInvest = $this->Agivest_model->deleteData("fyinvest","username ='$uname' AND idInvest ='$row->idInvest'");
+                                $deleteInvest = $this->Agivest_model->deleteData("fyinvest","username ='$uname' AND id_invest ='$row->id_invest'");
                             }
                             $uname = $data['namaAdmin'];
-                            $deleteInvest = $this->Agivest_model->deleteData("fyinvest","username ='$uname' AND idInvest ='$row->idInvest'");
+                            $deleteInvest = $this->Agivest_model->deleteData("fyinvest","username ='$uname' AND id_invest ='$row->id_invest'");
                         }
                     }
               }
@@ -256,7 +256,7 @@ class Investor extends CI_Controller {
                     $data['expired'] = $row->expired;
                     $data['pictureFishFarmer'] = $row->pictureFishFarmer;
                     $data['fishFarmer'] = $row->fishFarmer;
-                    $data['idInvest'] = $row->idInvest;
+                    $data['id_invest'] = $row->id_invest;
                     //Delete Otomatis
                     $expired1 = $data['expired'];
                     $expired2 = explode('-', $expired1);
@@ -266,7 +266,7 @@ class Investor extends CI_Controller {
                     //Cek Tahun
                     if ($expired2[5] < $currentDate2[2]) {
                         $uname = $data['namaAdmin'];
-                        $deleteInvest = $this->Agivest_model->deleteData("fyinvest","username ='$uname' AND idInvest ='$row->idInvest'");
+                        $deleteInvest = $this->Agivest_model->deleteData("fyinvest","username ='$uname' AND id_invest ='$row->id_invest'");
                     }elseif($expired2[3] < $currentDate2[0]) { //Cek Tanggal
                         //Cek Bulan
                         if ($expired2[4] <= $currentDate2[1]) {
@@ -275,10 +275,10 @@ class Investor extends CI_Controller {
 
                             }else{
                                 $uname = $data['namaAdmin'];
-                                $deleteInvest = $this->Agivest_model->deleteData("fyinvest","username ='$uname' AND idInvest ='$row->idInvest'");
+                                $deleteInvest = $this->Agivest_model->deleteData("fyinvest","username ='$uname' AND id_invest ='$row->id_invest'");
                             }
                             $uname = $data['namaAdmin'];
-                            $deleteInvest = $this->Agivest_model->deleteData("fyinvest","username ='$uname' AND idInvest ='$row->idInvest'");
+                            $deleteInvest = $this->Agivest_model->deleteData("fyinvest","username ='$uname' AND id_invest ='$row->id_invest'");
                         }
                     }
               }
