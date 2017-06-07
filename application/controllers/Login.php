@@ -27,10 +27,10 @@ class Login extends CI_Controller {
     //Modal Investasi
     $modalInvestasi = $this->input->post("modalInvestasi");
     //Nama Kolam
-    $namaKolam = $this->input->post("namaKolam");
+    $id_tambak = $this->input->post("id_tambak");
 
     $data['modalInvestasi'] = $modalInvestasi;
-    $data['namaKolam'] = $namaKolam;
+    $data['id_tambak'] = $id_tambak;
     $this->form_validation->set_rules('username', 'Email', 'trim|required|valid_email');
 
     if ($this->form_validation->run() == TRUE) {
@@ -45,10 +45,10 @@ class Login extends CI_Controller {
         $sess_array = array();      
         foreach($result as $row){
           $sess_array = array(          
-            'idIdentitas'  => $row->idIdentitas,
+            'id_identitas'  => $row->id_identitas,
             'username' => $row->username,
             'modalInvestasi' => $modalInvestasi,
-            'namaKolam' => $namaKolam,
+            'id_tambak' => $id_tambak,
             'statusUser' => $row->statusUser
           );
           $statusUser = $row->statusUser;
@@ -67,19 +67,33 @@ class Login extends CI_Controller {
               $this->load->view('pages/login');
         }else{
           if (!empty($modalInvestasi)) {
-            if ($statusUser != '1') {
+            if ($statusUser == '0') {
               //SET SESSION
               $this->session->set_userdata('userSession', $sess_array);
+              redirect('AgiFishInvest/agiFishInvestStep2');
+            }elseif ($statusUser == '1') {
+              //SET SESSION
+              $this->session->set_userdata('penambakSession', $sess_array);
+              redirect('AgiFishInvest/agiFishInvestStep2');
+            }elseif ($statusUser == '2') {
+              //SET SESSION
+              $this->session->set_userdata('adminSession', $sess_array);
               redirect('AgiFishInvest/agiFishInvestStep2');
             }else{
               $this->session->set_flashdata('gagalmasuk','Username atau Password anda salah');                   
               $this->load->view('pages/login' , $data);
             }
           }else{
-            if ($statusUser != '1') {
+            if ($statusUser == '0') {
               //SET SESSION
               $this->session->set_userdata('userSession', $sess_array);
               redirect('Investor', 'refresh');
+            }elseif ($statusUser == '1') {
+              $this->session->set_userdata('penambakSession', $sess_array);
+              redirect('Penambak', 'refresh');
+            }elseif ($statusUser == '2') {
+              $this->session->set_userdata('adminSession', $sess_array);
+              redirect('Admin', 'refresh');
             }else{
               $this->session->set_flashdata('gagalmasuk','Username atau Password anda salah');                   
               $redirect(base_url().'Login', 'refresh');
@@ -102,10 +116,10 @@ class Login extends CI_Controller {
         $sess_array = array();      
         foreach($result as $row){
           $sess_array = array(          
-            'idIdentitas'  => $row->idIdentitas,
+            'id_identitas'  => $row->id_identitas,
             'username' => $row->username,
             'modalInvestasi' => $modalInvestasi,
-            'namaKolam' => $namaKolam,
+            'id_tambak' => $id_tambak,
             'statusUser' => $row->statusUser
           );
           $statusUser = $row->statusUser;
@@ -122,25 +136,39 @@ class Login extends CI_Controller {
           $this->session->set_flashdata('gagalmasuk','Maaf email anda belum terverifikasi. Silahkan cek email anda.');                   
           redirect(base_url().'Login', 'refresh');
           }else{
-            if (!empty($modalInvestasi)) {
+          if (!empty($modalInvestasi)) {
+            if ($statusUser == '0') {
               //SET SESSION
-              if ($statusUser != '1') {
-                $this->session->set_userdata('userSession', $sess_array);
-                redirect('AgiFishInvest/agiFishInvestStep2', $data);
-              }else{
-                $this->session->set_flashdata('gagalmasuk','Username atau Password anda salah');                   
-                $this->load->view('pages/login' , $data);
-              }
+              $this->session->set_userdata('userSession', $sess_array);
+              redirect('AgiFishInvest/agiFishInvestStep2');
+            }elseif ($statusUser == '1') {
+              //SET SESSION
+              $this->session->set_userdata('penambakSession', $sess_array);
+              redirect('AgiFishInvest/agiFishInvestStep2');
+            }elseif ($statusUser == '2') {
+              //SET SESSION
+              $this->session->set_userdata('adminSession', $sess_array);
+              redirect('AgiFishInvest/agiFishInvestStep2');
             }else{
-              if ($statusUser != '1') {
-                //SET SESSION
-                $this->session->set_userdata('userSession', $sess_array);
-                redirect('Investor', 'refresh');
-              }else{
-                $this->session->set_flashdata('gagalmasuk','Username atau Password anda salah');                   
-                $this->load->view('pages/login');
-              }
+              $this->session->set_flashdata('gagalmasuk','Username atau Password anda salah');                   
+              $this->load->view('pages/login' , $data);
             }
+          }else{
+            if ($statusUser == '0') {
+              //SET SESSION
+              $this->session->set_userdata('userSession', $sess_array);
+              redirect('Investor', 'refresh');
+            }elseif ($statusUser == '1') {
+              $this->session->set_userdata('penambakSession', $sess_array);
+              redirect('Penambak', 'refresh');
+            }elseif ($statusUser == '2') {
+              $this->session->set_userdata('adminSession', $sess_array);
+              redirect('Admin', 'refresh');
+            }else{
+              $this->session->set_flashdata('gagalmasuk','Username atau Password anda salah');                   
+              $redirect(base_url().'Login', 'refresh');
+            }
+          }
         }
 
       }else{
@@ -156,11 +184,23 @@ class Login extends CI_Controller {
   }
 
   function logout(){
-    $this->session->unset_userdata('userSession');
+    $this->session->unset_userdata('userSession');    
     session_destroy();
     redirect('Home', 'refresh');
   }
 
+  function logoutPenambak(){
+    $this->session->unset_userdata('penambakSession');    
+    session_destroy();
+    redirect('Home', 'refresh');
+  }
+
+  function logoutAdmin(){
+    $this->session->unset_userdata('adminSession');    
+    session_destroy();
+    redirect('Home', 'refresh');
+  }
+  
   function verify($verificationText=NULL){
       $noRecords = $this->Email_model->verifyEmailAddress($verificationText);
       if ($noRecords > 0){

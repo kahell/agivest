@@ -162,8 +162,9 @@
                                 </ol>
                                 
                                 <div class="form-group to-animate" style="text-align: center">
-                                    <input type="hidden" name="namaKolam" id="namaKolam" value="<?php echo $namaKolam;?>">
+                                    <input type="hidden" name="id_tambak" id="id_tambak" value="<?php echo $id_tambak;?>">
                                     <input type="hidden" name="modalInvestasi" id="modalInvestasi" value="<?php echo $modalInvestasi;?>">
+                                    <input type="hidden" name="total_investTambak" id="total_investTambak" value="<?php echo $total_investTambak;?>">
                                     Dengan klik tombol <b>"LANJUT"</b>, berarti Anda menyetujui syarat dan kondisi investasi<br><br>
                                     <button class="btn btn-info btn-lg" style="width:80%">Lanjutkan</button>
                                 </div>

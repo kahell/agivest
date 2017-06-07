@@ -158,7 +158,10 @@
                                             Atas Nama<br>Ismail Rabbani              
                                     </div>
                                 </div>
-                                <div class="to-animate" style="text-align: center;">
+                                <div class="form-group to-animate" style="text-align: center;">
+                        <input type="hidden" name="id_tambak" id="id_tambak" value="<?php echo $id_tambak;?>">
+                        <input type="hidden" name="modalInvestasi" id="modalInvestasi" value="<?php echo $modalInvestasi;?>">
+                        <input type="hidden" name="total_investTambak" id="total_investTambak" value="<?php echo $total_investTambak;?>">
                                     <br>
                                     Setelah Anda melakukan pembayaran harap konfirmasi:<br><br>
                                     <b>Format : <col-md- class="green-font">[nama]_[jumlah biaya]_[waktu transfer]</col-md-></b><br><br>

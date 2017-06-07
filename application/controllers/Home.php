@@ -19,27 +19,30 @@ class Home extends CI_Controller {
             $namaadmin = $this->session->userdata('userSession');
             $data['namaAdmin'] = $namaadmin['username'];
             //Tambak
-            $tambak = $this->Home_model->getData("fytambak", "where statusTambak = 'N' ");
+            $tambak = $this->Home_model->getData("fytambak", "where statusTambak = 'A' ");
             //Tambak2
-            $tambak2 = $this->Home_model->getData("fytambak", "where statusTambak = 'A' ");
+            $tambak2 = $this->Home_model->getData("fytambak", "where statusTambak = 'N' ");
+            $id_tambak = "";
+            $id_tambak2 = "";
             $namaTambak = "";
             $namaTambak2 = "";
-            $jumlahInvest = "";
+            $total_investTambak = "";
             $date2 = "";
             $foto = "";
             $foto2 = "";
             if (!empty($tambak->result())) {
                 foreach ($tambak->result() as $row) {
                     $namaTambak = $row->nameTambak;
-                    $jumlahInvest = $row->jumlahInvest;
-                    $foto = $row->pict;
+                    $id_tambak = $row->id_tambak;
+                    $total_investTambak = $row->total_investTambak;
+                    $foto = $row->pictureTambak;
                 }
             }
             if (!empty($tambak2->result())) {
                 foreach ($tambak2->result() as $row) {
-                    $foto2 = $row->pict;
                     $namaTambak2 = $row->nameTambak;
-                    $date2 = $row->date;
+                    $foto2 = $row->pictureTambak;
+                    $id_tambak2 = $row->id_tambak;
                 }
             }
             //Statistik
@@ -49,7 +52,7 @@ class Home extends CI_Controller {
             //Total Penambak
             $countPenambak = $this->Home_model->countPenambak();
             //get Temporary tambak
-            $tempMoney = $this->Home_model->getMoney("fyinvest", "where statusInvest = 'A' AND nameTambak = '$namaTambak'");
+            $tempMoney = $this->Home_model->getMoney("fyinvest", "where statusInvest = 'A' AND id_tambak = '$id_tambak'");
             $hitungInvest = 0;
             if (!empty($tempMoney)) {
                 foreach ($tempMoney->result() as $row) {
@@ -59,7 +62,7 @@ class Home extends CI_Controller {
                 $hitungInvest = 0;
             }
             //Update Temporary Tambak
-            $updateTambak = $this->Home_model->updateTambak($namaTambak, $hitungInvest);
+            $updateTambak = $this->Home_model->updateTambak($id_tambak, $hitungInvest);
 
             $data['date'] = $date2;
             $data['foto'] = $foto;
@@ -73,27 +76,31 @@ class Home extends CI_Controller {
             $this->load->view('pages/home', $data);
         } else {
             //Tambak
-            $tambak = $this->Home_model->getData("fytambak", "where statusTambak = 'N' ");
+            $tambak = $this->Home_model->getData("fytambak", "where statusTambak = 'A' ");
             //Tambak2
-            $tambak2 = $this->Home_model->getData("fytambak", "where statusTambak = 'A' ");
+            $tambak2 = $this->Home_model->getData("fytambak", "where statusTambak = 'N' ");
+            $id_tambak = "";
+            $id_tambak2 = "";
             $namaTambak = "";
             $namaTambak2 = "";
-            $jumlahInvest = "";
+            $total_investTambak = "";
             $date2 = "";
             $foto = "";
             $foto2 = "";
             if (!empty($tambak)) {
                 foreach ($tambak->result() as $row) {
                     $namaTambak = $row->nameTambak;
-                    $jumlahInvest = $row->jumlahInvest;
-                    $foto = $row->pict;
+                    $id_tambak = $row->id_tambak;
+                    $total_investTambak = $row->total_investTambak;
+                    $foto = $row->pictureTambak;
                 }
             }
 
             if (!empty($tambak2)) {
                 foreach ($tambak2->result() as $row) {
-                    $foto2 = $row->pict;
                     $namaTambak2 = $row->nameTambak;
+                    $foto2 = $row->pictureTambak;
+                    $id_tambak2 = $row->id_tambak;
                     $date2 = $row->date;
                 }
             }
@@ -104,7 +111,7 @@ class Home extends CI_Controller {
             //Total Penambak
             $countPenambak = $this->Home_model->countPenambak();
             //get Temporary tambak
-            $tempMoney = $this->Home_model->getMoney("fyinvest", "where statusInvest = 'A' AND nameTambak = '$namaTambak'");
+            $tempMoney = $this->Home_model->getMoney("fyinvest", "where statusInvest = 'A' AND id_tambak = '$id_tambak'");
             $hitungInvest = 0;
             if (!empty($tempMoney)) {
                 foreach ($tempMoney->result() as $row) {
@@ -114,7 +121,7 @@ class Home extends CI_Controller {
                 $hitungInvest = 0;
             }
             //Update Temporary Tambak
-            $updateTambak = $this->Home_model->updateTambak($namaTambak, $hitungInvest);
+            $updateTambak = $this->Home_model->updateTambak($id_tambak, $hitungInvest);
 
             $data['date'] = $date2;
             $data['foto'] = $foto;

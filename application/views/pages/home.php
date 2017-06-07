@@ -261,7 +261,7 @@
                             <span class="agivest-counter-label">Investor</span>
                         </div>
                         <div class="col-md-6 text-center">
-                            <span class="agivest-counter js-counter" data-from="0" data-to="2" data-speed="5000" data-refresh-interval="50"></span>
+                            <span class="agivest-counter js-counter" data-from="0" data-to="<?php echo $countPenambak;?>" data-speed="5000" data-refresh-interval="50"></span>
                             <span class="agivest-counter-label">Penambak</span>
                         </div>
                     </div>

@@ -52,8 +52,6 @@
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adm/dist/css/skins/_all-skins.min.css">
         <!-- iCheck -->
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adm/plugins/iCheck/flat/blue.css">
-        <!-- Morris chart -->
-        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adm/plugins/morris/morris.css">
         <!-- jvectormap -->
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adm/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
         <!-- Date Picker -->
@@ -123,25 +121,13 @@
                                             <small>Agivest</small>
                                         </p>
                                     </li>
-                                    <!-- Menu Body -->
-                                    <li class="user-body">
-                                        <div class="row">
-                                            <div class="col-xs-6 text-center">
-                                                <a href="<?php echo site_url('Investor/agiFish'); ?>">Agi-Fish</a>
-                                            </div>
-                                            <div class="col-xs-6 text-center">
-                                                <a href="<?php echo site_url('Investor/agiPet'); ?>">Agi-Pet</a>
-                                            </div>
-                                        </div>
-                                        <!-- /.row -->
-                                    </li>
                                     <!-- Menu Footer-->
                                     <li class="user-footer">
                                         <div class="pull-left">
                                             <a href="#" class="btn btn-default btn-flat">Profile</a>
                                         </div>
                                         <div class="pull-right">
-                                            <a href="<?php echo site_url('Login/logout'); ?>" class="btn btn-default btn-flat">Sign out</a>
+                                            <a href="<?php echo site_url('Login/logoutPenambak'); ?>" class="btn btn-default btn-flat">Sign out</a>
                                         </div>
                                     </li>
                                 </ul>
@@ -173,16 +159,6 @@
                                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                             </a>
                         </li>
-                        <li class="treeview">
-                            <a href="<?php echo site_url('Investor/agiFish'); ?>">
-                                <i class="fa fa-anchor"></i> <span>Agi-Fish</span>
-                            </a>
-                        </li>
-                        <li class="treeview">
-                            <a href="<?php echo site_url('Investor/agiPet'); ?>">
-                                <i class="fa fa-paw"></i> <span>Agi-Pet</span>
-                            </a>
-                        </li>
                     </ul>
                 </section>
                 <!-- /.sidebar -->
@@ -194,7 +170,7 @@
                 <section class="content-header">
                     <h1>
                         Dashboard
-                        <small>Investor Dashboard</small>
+                        <small class="label label-info">Penambak Dashboard</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -206,104 +182,136 @@
                 <section class="content">
                     <!-- Small boxes (Stat box) -->
                     <div class="row">
-                        <div class="col-lg-6 col-xs-6">
+                        <div class="col-lg-4 col-xs-12">
                             <!-- small box -->
                             <div class="small-box bg-blue">
                                 <div class="inner">
-                                    <h3><?php echo $countAgiFish?></h3>
+                                    <h3>Pakan</h3>
                                     <p>Agi-Fish</p>
                                 </div>
                                 <div class="icon">
                                     <i class="fa fa-anchor"></i>
                                 </div>
-                                <a href="<?php echo site_url('Investor/agiFish'); ?>" class="small-box-footer">Lihat <i class="fa fa-arrow-circle-right"></i>
-                                </a>
+                                <!-- data-toggle="modal" data-target="#myModal" -->
+                                <a href="#" id="tambak_pakan" data-toggle="modal" data-target="#myModal" class="small-box-footer tambak_pakan">Tambah Pakan <i class="fa fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                         <!-- ./col -->
-                        <div class="col-lg-6 col-xs-6">
+                        <div class="col-lg-4 col-xs-12">
+                            <!-- small box -->
+                            <div class="small-box bg-blue">
+                                <div class="inner">
+                                    <h3>Ikan</h3>
+                                    <p>Agi-Fish</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-anchor"></i>
+                                </div>
+                                <a href="#" id="tambak_ikan" data-toggle="modal" data-target="#myModal" class="small-box-footer tambak_ikan">Tambah Ikan <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-lg-4 col-xs-12">
+                            <!-- small box -->
+                            <div class="small-box bg-blue">
+                                <div class="inner">
+                                    <h3>Keuangan</h3>
+                                    <p>Agi-Fish</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-anchor"></i>
+                                </div>
+                                <a href="#" id="tambak_uang" data-toggle="modal" data-target="#myModal" class="small-box-footer tambak_uang">Tambah Uang <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-lg-4 col-xs-12">
                             <!-- small box -->
                             <div class="small-box bg-yellow">
                                 <div class="inner">
-                                    <h3>0</h3>
+                                    <h3>Pakan</h3>
                                     <p>Agi-Pet</p>
                                 </div>
                                 <div class="icon">
                                     <i class="fa fa-paw"></i>
                                 </div>
-                                <a href="<?php echo site_url('Investor/agiPet'); ?>" class="small-box-footer">Lihat <i class="fa fa-arrow-circle-right"></i></a>
+                                <a href="#" id="pet_pakan" data-toggle="modal" data-target="#myModal" class="small-box-footer pet_pakan">Tambah Pakan <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-lg-4 col-xs-12">
+                            <!-- small box -->
+                            <div class="small-box bg-yellow">
+                                <div class="inner">
+                                    <h3>Ternak</h3>
+                                    <p>Agi-Pet</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-paw"></i>
+                                </div>
+                                <a href="#" id="pet_ternak" data-toggle="modal" data-target="#myModal" class="small-box-footer pet_ternak">Tambah Ternak <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-lg-4 col-xs-12">
+                            <!-- small box -->
+                            <div class="small-box bg-yellow">
+                                <div class="inner">
+                                    <h3>Keuangan</h3>
+                                    <p>Agi-Pet</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-paw"></i>
+                                </div>
+                                <a href="#" id="pet_uang" data-toggle="modal" data-target="#myModal" class="small-box-footer pet_uang">Tambah Uang <i class="fa fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>
                     <!-- /.row -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="box box-info">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">Latest Orders</h3>
+                </section>
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title" id="title">Tittle</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label id="lpakan">Jumlah Pakan</label>
+                                    <input type="text" id="pakan" class="form-control" placeholder="ex: 90.5, 100">
 
-                                    <div class="box-tools pull-right">
-                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                                    </div>
-                                </div>
-                                <!-- /.box-header -->
-                                <div class="box-body">
-                                    <div class="table-responsive">
-                                        <table class="table no-margin">
-                                            <thead>
-                                                <tr>
-                                                    <th>Order ID</th>
-                                                    <th>Tambak</th>
-                                                    <th>Order</th>
-                                                    <th>Expired</th>
-                                                    <th>Status</th>
-                                                    <th>Harga</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                
-                                                    <?php
-                                                    foreach ($ongoing_order->result() as $row) {?>
-                                                    <tr>
-                                                        <th><?php echo $row->id_invest?></th>
-                                                        <th><?php echo $row->nameTambak?></th>
-                                                        <th><?php echo $row->ordered?></th>
-                                                        <th><?php echo $row->expired?></th>
-                                                        <th>
-                                                            <?php
-                                                                if ($row->statusInvest == 'A') {?>
-                                                                    <span class="label label-success">Lunas</span>
+                                    <label id="lconditional">Conditional</label>
+                                    <select id="condition_ikan" class="form-control">
+                                        <option value="Excelent">Excelent</option>
+                                        <option value="Good">Good</option>
+                                        <option value="Bad">Bad</option>
+                                        <option value="Sick">Sick</option>
+                                    </select>
+                                    <label id="ldead_ikan">Jumlah Ikan Mati (Ekor)</label>
+                                    <input type="text" id="dead_ikan" class="form-control" placeholder="ex: 100">
+                                    <label id="ldesc">Deskripsi Ikan mati</label>
+                                    <textarea style="height: 200px;" placeholder="Deskripsi Kondisi Ikan" id="desc_ikan" class="form-control"></textarea>
 
-                                                            <?php
-                                                                }else{?>
-                                                                    <span class="label label-danger">Belum Dibayar</span>
-                                                            <?php
-                                                                }
-                                                            ?>
-                                                            
-                                                        </th>
-                                                        <th>Rp. <?php echo number_format($row->money, 0);?></th>
-                                                    </tr>
-                                                    <?php
-                                                    }
-                                                    ?>
-                                                
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <!-- /.table-responsive -->
+                                    <label id="lbuy_uang">Beli Uang (Rp.)</label>
+                                    <input type="text" id="buy_uang" class="form-control" placeholder="ex: 2000">
+                                    <label id="ldesc_uang">Deskripsi Uang</label>
+                                    <textarea style="height: 200px;" placeholder="Deskripsi Pengeluaran" id="desc_uang" class="form-control"></textarea>
+
+                                  <input type="hidden" id="what" class="form-control" value="">
+                                  <input type="hidden" id="id_identitas" class="form-control" value="<?php echo $id_identitas;?>">
                                 </div>
-                                <!-- /.box-body -->
-                                <div class="box-footer clearfix">
-                                    <a href="<?php echo site_url('AgiFishInvest');?>" class="btn btn-sm btn-info btn-flat pull-left">Investasi kembali</a>
-                                </div>
-                                <!-- /.box-footer -->
+                            </div>
+                            <div class="modal-footer" >
+                                <a href="#" id="delete" data-dismiss="modal" style="display: none" class="btn btn-flat btn-warning">Delete</a>
+                                <a href="#" id="saveChange" data-dismiss="modal" style="display: none" class="btn btn-flat btn-primary">Update</a>
+                                <a href="#" id="addButton" data-dismiss="modal" style="display: none" class="btn btn-flat btn-primary">Add</a>
+                                <a href="#" id="cancelButton" data-dismiss="modal" class="btn btn-flat btn-default">Cancel</a>
                             </div>
                         </div>
                     </div>
-                </section>
+                </div>
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
@@ -324,9 +332,6 @@
         </script>
         <!-- Bootstrap 3.3.6 -->
         <script src="<?php echo base_url(); ?>assets/adm/bootstrap/js/bootstrap.min.js"></script>
-        <!-- Morris.js charts -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-        <script src="<?php echo base_url(); ?>assets/adm/plugins/morris/morris.min.js"></script>
         <!-- Sparkline -->
         <script src="<?php echo base_url(); ?>assets/adm/plugins/sparkline/jquery.sparkline.min.js"></script>
         <!-- jvectormap -->
@@ -347,9 +352,126 @@
         <script src="<?php echo base_url(); ?>assets/adm/plugins/fastclick/fastclick.js"></script>
         <!-- AdminLTE App -->
         <script src="<?php echo base_url(); ?>assets/adm/dist/js/app.min.js"></script>
-        <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-        <script src="<?php echo base_url(); ?>assets/adm/dist/js/pages/dashboard.js"></script>
-        <!-- AdminLTE for demo purposes -->
-        <script src="<?php echo base_url(); ?>assets/adm/dist/js/demo.js"></script>
+        <script>
+            $(document).ready(function(){
+                //Tambak Pakan
+                $('.tambak_pakan').each(function(){
+                    $(this).click(function(event){
+                        var text = "tambak_pakan";
+                        $('#title').text('Input Pakan');
+                        $('#what').val(text);
+                        $('#lpakan').show('400');
+                        $('#pakan').show('400');
+                        $('#lconditional').hide('400');
+                        $('#condition_ikan').hide('400');
+                        $('#ldesc').hide('400');
+                        $('#desc_ikan').hide('400');
+                        $('#ldead_ikan').hide('400');
+                        $('#dead_ikan').hide('400');
+                        $('#lbuy_uang').hide('400');
+                        $('#buy_uang').hide('400');
+                        $('#ldesc_uang').hide('400');
+                        $('#desc_uang').hide('400');
+                        $('#delete').hide('400');
+                        $('#saveChange').hide('400');
+                        $('#addButton').show('400');
+                    });
+                });
+
+                //Tambak Ikan
+                $('.tambak_ikan').each(function(){
+                    $(this).click(function(event){
+                        var text = "tambak_ikan";
+                        $('#title').text('Input Ikan');
+                        $('#what').val(text);
+                        $('#lpakan').hide('400');
+                        $('#pakan').hide('400');
+                        $('#lconditional').show('400');
+                        $('#condition_ikan').show('400');
+                        $('#ldesc').show('400');
+                        $('#desc_ikan').show('400');
+                        $('#ldead_ikan').show('400');
+                        $('#dead_ikan').show('400');
+                        $('#lbuy_uang').hide('400');
+                        $('#buy_uang').hide('400');
+                        $('#ldesc_uang').hide('400');
+                        $('#desc_uang').hide('400');
+                        $('#delete').hide('400');
+                        $('#saveChange').hide('400');
+                        $('#addButton').show('400');
+                    });
+                });
+
+                //Tambak Uang
+                $('.tambak_uang').each(function(){
+                    $(this).click(function(event){
+                        var text = "tambak_uang";
+                        $('#title').text('Input Uang');
+                        $('#what').val(text);
+                        $('#lpakan').hide('400');
+                        $('#pakan').hide('400');
+                        $('#lconditional').hide('400');
+                        $('#condition_ikan').hide('400');
+                        $('#ldesc').hide('400');
+                        $('#desc_ikan').hide('400');
+                        $('#ldead_ikan').hide('400');
+                        $('#dead_ikan').hide('400');
+                        $('#lbuy_uang').show('400');
+                        $('#buy_uang').show('400');
+                        $('#ldesc_uang').show('400');
+                        $('#desc_uang').show('400');
+                        $('#delete').hide('400');
+                        $('#saveChange').hide('400');
+                        $('#addButton').show('400');
+                    });
+                });
+
+                //Add Data
+                $('#addButton').click(function(event){
+                    $what = $('#what').val();
+                    $url = "";
+                    var formData = new FormData();
+                    if ($what == "tambak_pakan") {
+                        formData.append('pakan', $("#pakan").val());
+                        formData.append('id_identitas', $("#id_identitas").val());
+                        $url = "<?php echo site_url("Penambak/update_pakanTambak")?>";
+                    }
+                    if($what == "tambak_ikan"){
+                        formData.append('desc_ikan', $("#desc_ikan").val());
+                        formData.append('dead_ikan', $("#dead_ikan").val());
+                        formData.append('condition_ikan', $("#condition_ikan").val());
+                        formData.append('id_identitas', $("#id_identitas").val());
+                        $url = "<?php echo site_url("Penambak/update_ikanTambak")?>";
+                    }
+                    if($what == "tambak_uang"){
+                        formData.append('buy_uang', $("#buy_uang").val());
+                        formData.append('desc_uang', $("#desc_uang").val());
+                        formData.append('id_identitas', $("#id_identitas").val());
+                        $url = "<?php echo site_url("Penambak/update_uangTambak")?>";
+                    }
+                    //console.log("URL: " + $url);
+                    //console.log("what: " + $what);
+                    //console.log("buy_uang: " + $("#buy_uang").val());
+                    //console.log("desc_uang: " + $("#desc_uang").val());
+                    //console.log("id_identitas: " + $("#id_identitas").val());
+                    $.ajax({
+                        url: $url,
+                        type: 'post',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(data,response) {
+                            //console.log(response);
+                            $('#pakan').val('');
+                            $('#desc_ikan').val('');
+                            $('#dead_ikan').val('');
+                            $('#condition_ikan').val('');
+                            $('#buy_uang').val('');
+                            $('#desc_uang').val('');
+                        }
+                    });
+                });
+            });
+        </script>
     </body>
 </html>

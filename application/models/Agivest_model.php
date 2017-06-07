@@ -74,17 +74,67 @@ Class Agivest_model extends CI_Model {
 	}
 	//End of Forgot-Model -------------------------------------------------------
 	//4. Investor - Model ---------------------------------------------------------
-	public function getDataInvestor($username){
-		$result = $this->db->query("select * from fyidentitas where username = '$username'");
+	public function getDataOrder($id_identitas){
+		$result = $this->db->query("select * from fyinvest,fytambak where fyinvest.id_tambak = fytambak.id_tambak and fyinvest.id_identitas = '$id_identitas'");
 		return $result;
 	}
 
-	public function getDataTambak($username, $statusInvest){
+	public function getDataOrder2($id_identitas){
+		$result = $this->db->query("select * from fyinvest,fytambak where fyinvest.id_tambak = fytambak.id_tambak and fyinvest.id_identitas = '$id_identitas' and fyinvest.statusInvest = 'N'");
+		return $result;
+	}
+
+	public function getDataOrderAktif($id_identitas){
+		$result = $this->db->query("select * from fyinvest,fytambak where fyinvest.id_tambak = fytambak.id_tambak and fyinvest.id_identitas = '$id_identitas' and fyinvest.statusInvest = 'A'");
+		return $result;
+	}
+
+	public function countOrderAktif($id_identitas){
+		$result = $this->db->query("select count(fyinvest.id_invest) as count from fyinvest,fytambak where fyinvest.id_tambak = fytambak.id_tambak and fyinvest.id_identitas = '$id_identitas' and fyinvest.statusInvest = 'A'");
+		return $result->row()->count;
+	}
+
+	public function getDataInvestor($id_identitas){
+		$result = $this->db->query("select * from fyidentitas where id_identitas = '$id_identitas'");
+		return $result;
+	}
+
+	public function getDataInvestasi($id_tambak){
+		$result = $this->db->query("select * from fyinvest
+									LEFT JOIN fyidentitas
+									on fyidentitas.id_identitas = fyinvest.id_identitas
+									where id_tambak = '$id_tambak'
+									and fyinvest.statusInvest = 'A'
+									");
+		return $result;
+	}
+
+	public function getCekTambak(){
+		$result = $this->db->query("select *
+									from fytambak
+									WHERE fytambak.total_investTambak <= (Select sum(money)
+																	     From fyinvest,fytambak
+																	     where fyinvest.id_tambak = fytambak.id_tambak
+																	     and fytambak.statusTambak = 'A'
+																	     and fyinvest.statusInvest = 'A'
+																		)");
+		return $result;
+	}
+
+	public function getDataPenambak($id_tambak){
+		$result = $this->db->query("
+			select * from fyidentitas 
+			LEFT JOIN fytambak 
+			ON fytambak.id_penambak = fyidentitas.id_identitas
+			WHERE fytambak.id_tambak = '$id_tambak'  
+			LIMIT 1");
+		return $result;
+	}
+
+	public function getDataTambak($id_tambak, $statusInvest){
 		$result = $this->db->query("select 
 									fytambak.nameTambak, 
-									fytambak.pictureTambak, 
-									fytambak.fishFarmer, 
-									fytambak.pictureFishFarmer,
+									fytambak.pictureTambak,
 									fytambak.statusTambak,
 									fytambak.location, 
 									fyinvest.statusInvest, 
@@ -93,18 +143,16 @@ Class Agivest_model extends CI_Model {
 									fyinvest.ordered, 
 									fyinvest.expired
 									from fytambak,fyinvest
-									where fytambak.nameTambak = fyinvest.nameTambak
-									and fyinvest.username = '$username'
+									where fytambak.id_tambak = fyinvest.id_tambak
+									and fyinvest.id_tambak = '$id_tambak'
 									and fyinvest.statusInvest = '$statusInvest';");
 		return $result;
 	}
 
-	public function getPilihTambak($username){
+	public function getPilihTambak($id_tambak){
 		$result = $this->db->query("select 
 									fytambak.nameTambak, 
 									fytambak.pictureTambak, 
-									fytambak.fishFarmer, 
-									fytambak.pictureFishFarmer,
 									fytambak.statusTambak, 
 									fytambak.progresTambak,
 									fytambak.location, 
@@ -115,7 +163,7 @@ Class Agivest_model extends CI_Model {
 									fyinvest.expired
 									from fytambak,fyinvest
 									where fytambak.nameTambak = fyinvest.nameTambak
-									and fyinvest.username = '$username'
+									and fyinvest.id_tambak = '$id_tambak'
 									and fyinvest.statusInvest = 'A';");
 		return $result;
 	}	
@@ -144,79 +192,88 @@ Class Agivest_model extends CI_Model {
 	}
 
 	public function getDataPakan($id){
-		$result = $this->db->query("select 
-									fytambak.nameTambak, 
-									fypakan.username,
-									fypakan.report,
-									fypakan.picturePakan,
-									fypakan.kilogram
-									from fytambak,fypakan
-									where fytambak.nameTambak = fypakan.nameTambak
-									and fytambak.statusTambak = 'A'
-									and fypakan.nameTambak = '$id'
-									order by fypakan.laporanHari;");
+		$result = $this->db->query("select fypakan.tanggal_pakan, fypakan.jmlhKg_pakan
+									from fypakan, fytambak
+									where fypakan.id_tambak = fytambak.id_tambak
+									and fypakan.id_tambak = '$id'
+									and fypakan.id_penambak = fytambak.id_penambak
+									order by fypakan.id_pakan DESC;");
+		return $result;
+	}
+
+	public function countPakan($id){
+		$this->db->select_sum('jmlhKg_pakan');
+		$this->db->where("fypakan.id_tambak = '$id'");
+		$this->db->where("fytambak.id_tambak = fypakan.id_tambak");
+		$this->db->where("fytambak.id_penambak = fypakan.id_penambak");
+		$result = $this->db->get('fypakan, fytambak')->row()->jmlhKg_pakan;
 		return $result;
 	}
 
 	public function getDataIkan($id){
 		$result = $this->db->query("select 
-									fytambak.nameTambak, 
-									fyikan.username,
-									fyikan.reportDay,
-									fyikan.totalFish
-									from fytambak,fyikan
-									where fytambak.nameTambak = fyikan.nameTambak
-									and fytambak.statusTambak = 'A'
-									and fyikan.nameTambak = '$id'
-									order by fyikan.reportDay;");
+									fyikan.id_ikan, 
+									fyikan.condition_ikan,
+									fyikan.desc_ikan,
+									fyikan.dead_ikan,
+									fyikan.date_ikan
+									from fyikan,fytambak
+									where fyikan.id_tambak = '$id' 
+									and fyikan.id_tambak = fytambak.id_tambak
+									and fyikan.id_penambak = fytambak.id_penambak
+									order by fyikan.id_ikan DESC;");
+		return $result;
+	}
+
+	public function getKondisiIkan($id){
+		/*
+		$result = $this->db->query("select 
+									condition_ikan
+									from fyikan,fytambak
+									where fyikan.id_tambak = '$id' 
+									and fyikan.id_tambak = fytambak.id_tambak
+									and fyikan.id_penambak = fytambak.id_penambak
+									limit 1;");
+		return $result;*/
+
+		$this->db->select('condition_ikan');
+		$this->db->where("fyikan.id_tambak = '$id'");
+		$this->db->where("fyikan.id_tambak = fytambak.id_tambak");
+		$result = $this->db->get('fyikan, fytambak');
 		return $result;
 	}
 
 	public function getDataUang($id){
 		$result = $this->db->query("select 
-									fytambak.nameTambak, 
-									fyuang.username,
-									fyuang.reportDay,
-									fyuang.deposit,
-									fyuang.kredit,
-									from fytambak,fyuang
-									where fytambak.nameTambak = fyuang.nameTambak
-									and fytambak.statusTambak = 'A'
-									and fyuang.nameTambak = '$id'
-									order by fyuang.reportDay;");
+									fyuang.id_uang,
+									fyuang.date_uang,
+									fyuang.save_uang,
+									fyuang.buy_uang,
+									fyuang.desc_uang
+									from fyuang, fytambak
+									where fytambak.id_tambak = fyuang.id_tambak
+									and fyuang.id_tambak = '$id'
+									and fyuang.id_penambak = fytambak.id_penambak
+									order by fyuang.id_uang DESC;");
 		return $result;
 	}
 
-	public function getDataProfit1($id, $limit, $start){
-		$result = $this->db->query("select 
-									fytambak.nameTambak, 
-									fyinvest.username,
-									fyinvest.ownership
-									from fytambak,fyinvest
-									where fyinvest.nameTambak = '$id'
-									and fytambak.nameTambak = '$id'
-									and fytambak.statusTambak = 'A'
-									and fyinvest.statusInvest = 'A'
-									order by fyinvest.username 
-									limit '$start', '$limit';");
+	//End of Investor-Model -------------------------------------------------------
+	//5. Penambak - Model ---------------------------------------------------------
+	public function getIdTambak($id_identitas){
+		$this->db->select('id_tambak');
+		$this->db->where("fytambak.id_penambak = '$id_identitas'");
+		$result = $this->db->get('fytambak')->row()->id_tambak;
 		return $result;
 	}
-	function getDataProfit($id, $limit, $start)
-    {
-        $sql = "select 
-        		fytambak.nameTambak,
-        		fyinvest.username,
-        		fyinvest.ownership
-        		from fytambak, fyinvest
-        		where fyinvest.nameTambak = '$id'
-        		and fytambak.nameTambak = '$id'
-				and fytambak.statusTambak = 'A'
-				and fyinvest.statusInvest = 'A'
-        		order by fyinvest.username
-        		limit $start, $limit;";
-        $query = $this->db->query($sql);
-        return $query->result();
-    }
+
+	public function getTempInvestment($id_tambak){
+		$this->db->select('temporaryInvestment');
+		$this->db->where("fytambak.id_tambak = '$id_tambak'");
+		$result = $this->db->get('fytambak')->row()->temporaryInvestment;
+		return $result;
+	}
+
 	//End of Investor-Model -------------------------------------------------------
 }
 

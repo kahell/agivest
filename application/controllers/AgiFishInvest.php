@@ -6,6 +6,7 @@ class AgiFishInvest extends CI_Controller {
 	function __construct(){
         parent::__construct();
         $this->load->model('Agivest_model');
+        $this->load->model('Home_model');
         $this->load->model('Email_model');
         $this->load->helper('form');
         $this->load->helper('url');
@@ -19,12 +20,37 @@ class AgiFishInvest extends CI_Controller {
 		if($this->session->userdata('userSession')){		
             $namaadmin = $this->session->userdata('userSession');
             $data['namaAdmin'] = $namaadmin['username'];
+            
+            //Non Tambak Penuh
+            $cekTambak = $this->Agivest_model->getCekTambak();
+            //Update Tambak Jadi Tidak Aktif
+            if (!empty($cekTambak->result())) {
+                $id_tambak = "";
+                foreach ($cekTambak->result() as $row) {
+                    $id_tambak = $row->id_tambak;
+                }
+                //Cek Uang Investasi countInvest2
+                $temporaryInvestment = $this->Home_model->countInvest2($id_tambak);
+                
+                $dataInput = array(
+                    'statusTambak' => "N",
+                    'temporaryInvestment' => $temporaryInvestment
+                );
+
+                $updateTambak = $this->Home_model->updateData('fytambak', $dataInput, "id_tambak = '$id_tambak'");
+            }
+
             //Ambil Kolam Dari Database
-            $data['namaKolam'] = "Agi-1";
+            $data['kolam'] = $this->Home_model->getData("fytambak", "WHERE statusTambak = 'A'");
+
+            //Jumlah Investasi Terkumpul
+            $data['jumlahInvestasi'] = $this->Home_model->countInvestTambak();
 			$this->load->view('pages/agiFishInvest' , $data);
 		}else{
             //Ambil Kolam Dari Database
-            $data['namaKolam'] = "Agi-1";
+            $data['kolam'] = $this->Home_model->getData("fytambak", "WHERE fytambak.statusTambak = 'A';");
+            //Jumlah Investasi Terkumpul
+            $data['jumlahInvestasi'] = $this->Home_model->countInvestTambak();
         	$this->load->view('pages/agiFishInvest' , $data);	
 		}
 	}
@@ -33,21 +59,21 @@ class AgiFishInvest extends CI_Controller {
         if($this->session->userdata('userSession')){        
             $namaadmin = $this->session->userdata('userSession');
             $data['namaAdmin'] = $namaadmin['username'];
-            $data['namaKolam'] = $this->input->post("namaKolam");
+            $data['id_tambak'] = $this->input->post("id_tambak");
             $data['modalInvestasi'] = $this->input->post("modalInvestasi");
-            
+            $data['total_investTambak'] = $this->input->post("total_investTambak");
 
             if (!empty($namaadmin['modalInvestasi'] && empty($data['modalInvestasi']))) {
                 $data['modalInvestasi'] = $namaadmin['modalInvestasi'];
             }
-            if (!empty($namaadmin['namaKolam'] && empty($data['namaKolam']))) {
-                $data['namaKolam'] = $namaadmin['namaKolam'];
+            if (!empty($namaadmin['id_tambak'] && empty($data['id_tambak']))) {
+                $data['id_tambak'] = $namaadmin['id_tambak'];
             }
             //die(var_dump($data['modalInvestasi']));
             $this->load->view('pages/agiFishInvest2' , $data);
         }else{
             $data['modalInvestasi'] = $this->input->post("modalInvestasi");
-            $data['namaKolam'] = $this->input->post("namaKolam");
+            $data['id_tambak'] = $this->input->post("id_tambak");
             $this->load->view('pages/login', $data);   
         }
     }
@@ -56,18 +82,19 @@ class AgiFishInvest extends CI_Controller {
         if($this->session->userdata('userSession')){        
             $namaadmin = $this->session->userdata('userSession');
             $data['namaAdmin'] = $namaadmin['username'];
-            $data['namaKolam'] = $this->input->post("namaKolam");
+            $data['id_tambak'] = $this->input->post("id_tambak");
             $data['modalInvestasi'] = $this->input->post("modalInvestasi");
+            $data['total_investTambak'] = $this->input->post("total_investTambak");
             if (!empty($namaadmin['modalInvestasi'])) {
                 $data['modalInvestasi'] = $namaadmin['modalInvestasi'];
             }
-            if (!empty($namaadmin['namaKolam'])) {
-                $data['namaKolam'] = $namaadmin['namaKolam'];
+            if (!empty($namaadmin['id_tambak'])) {
+                $data['id_tambak'] = $namaadmin['id_tambak'];
             }
             $this->load->view('pages/agiFishInvest3' , $data);
         }else{
             $data['modalInvestasi'] = $this->input->post("modalInvestasi");
-            $data['namaKolam'] = $this->input->post("namaKolam");
+            $data['id_tambak'] = $this->input->post("id_tambak");
             $this->load->view('pages/login', $data);   
         }
     }
@@ -75,18 +102,37 @@ class AgiFishInvest extends CI_Controller {
         if($this->session->userdata('userSession')){        
             $namaadmin = $this->session->userdata('userSession');
             $data['namaAdmin'] = $namaadmin['username'];
-            $data['namaKolam'] = $this->input->post("namaKolam");
+            $data['id_tambak'] = $this->input->post("id_tambak");
             $data['modalInvestasi'] = $this->input->post("modalInvestasi");
+            $data['total_investTambak'] = $this->input->post("total_investTambak");
             if (!empty($namaadmin['modalInvestasi'])) {
                 $data['modalInvestasi'] = $namaadmin['modalInvestasi'];
             }
-            if (!empty($namaadmin['namaKolam'])) {
-                $data['namaKolam'] = $namaadmin['namaKolam'];
+            if (!empty($namaadmin['id_tambak'])) {
+                $data['id_tambak'] = $namaadmin['id_tambak'];
             }
-            $this->load->view('pages/home' , $data);
+            
+            //Simpen Data
+            $t = time();
+            $today = date("Y-m-d", $t); 
+            $expiredDay = date( "Y-m-d", strtotime( "$today +3 days" ));
+
+            $dataInput = array(
+                'id_identitas' => $namaadmin['id_identitas'],
+                'id_tambak'  => $data['id_tambak'],
+                'statusInvest'  => 'N',
+                'money' => $data['modalInvestasi'],
+                'saham_invest' => ($data['modalInvestasi'] / $data['total_investTambak']) * 100,
+                'ordered' => $today,
+                'expired' => $expiredDay
+            );
+            $simpan = $this->Home_model->insertData('fyinvest' , $dataInput);
+            
+            //$this->load->view('pages/home' , $data);
+            redirect('Home', 'refresh');
         }else{
             $data['modalInvestasi'] = $this->input->post("modalInvestasi");
-            $data['namaKolam'] = $this->input->post("namaKolam");
+            $data['id_tambak'] = $this->input->post("id_tambak");
             $this->load->view('pages/login', $data);   
         }
     }

@@ -128,6 +128,20 @@
         <section id="agivest-services">
             <div class="agivest-services">
                 <div class="container">
+                <?php
+                    if (empty($kolam->result())) {?>
+                    <div class="row">
+                        <div class="col-md-12" style="text-align: center;">
+                            <h1>- Maaf Tambak Belum Tersedia -</h1>
+                            <p>
+                            Silahkan daftarkan diri anda ke sistem kami<br>
+                            Untuk mendapatkan informasi tambak tersedia</br>
+                            </p>
+                            <a href="<?php echo site_url('Register');?>" style="width: 50%" class="btn btn-info"><span class="fa fa-rocket"></span> Daftar Sekarang Juga</a>
+                        </div>
+                    </div>
+                <?php
+                    }else{?>
                     <div class="row">
                         <div class="col-md-12 section-heading text-center">
                             <h2 class="to-animate"><span>Konfirmasi Investasi</span></h2>
@@ -137,25 +151,36 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>                  
+
                     <div class="row">
+                        <?php
+                            foreach ($kolam->result() as $row) {?>
                         <div class="col-md-5">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <img class="to-animate img-thumbnail img-responsive" src="<?php echo base_url();?>assets/images/perikanan.jpeg">
+                                    <img alt="Tambak" class="to-animate img-thumbnail img-responsive" src="<?php echo base_url();?><?php echo $row->pictureTambak;?>">
                                     <div class="core">
                                         <div class=" to-animate project-collected">
                                             <b> 
-                                                <strong>Rp. 0,-</strong>
+                                                <strong>Rp. <?php echo number_format($jumlahInvestasi, 0); ?>,-</strong>
                                              
                                                 <span> Terkumpul</span></b>
                                         </div>
                                         <div class="to-animate project-bar">
-                                            <span class="project-bar-progress" style="width: 2%">
+                                            
+                                            <span class="project-bar-progress" style="width: 
+                                            <?php 
+                                                $hasil = 0;
+                                                $hasil =  $jumlahInvestasi / $row->total_investTambak * 100;
+                                                echo number_format($hasil, 0);
+                                            ?>%">
                                             </span>
                                         </div>
                                         <div class="to-animate project-target">
-                                           <b><strong>0%</strong></b>
+                                           <b>Target : <strong>Rp. <?php 
+                                           echo number_format($row->total_investTambak, 0)?>
+                                           </strong></b>
                                         </div>
                                     </div>
                                 </div>
@@ -166,10 +191,10 @@
                                 <div class="col-md-4">
                                     <h3 class="to-animate" style="text-align: center;">Deskripsi</h3>
                                     <hr class="to-animate" style="margin-top: -20px;">
-                                    <p class="to-animate"><b><i class="fa fa-anchor"></i>   Nama Kolam :</b> Agi-1</p>
-                                    <p class="to-animate"><b><i class="fa fa-map-marker"></i>   Lokasi :</b> <a href="#">Malang, Jawa Timur</a></p>
-                                    <p class="to-animate"><b><i class="glyphicon glyphicon-signal"></i>   Luas :</b> 3m x 3m x 1m</p>
-                                    <p class="to-animate"><b><i class="fa fa-money"></i>   Total Investasi :</b> Rp. 20.000.000,-</p>
+                                    <p class="to-animate"><b><i class="fa fa-anchor"></i>   Nama Kolam :</b> <?php echo $row->nameTambak?></p>
+                                    <p class="to-animate"><b><i class="fa fa-map-marker"></i>   Lokasi :</b> <a href="#"><?php echo $row->location?></a></p>
+                                    <p class="to-animate"><b><i class="glyphicon glyphicon-signal"></i>   Luas :</b> <?php echo $row->spaciousPond?></p>
+                                    <p class="to-animate"><b><i class="fa fa-money"></i>   Total Investasi :</b> <br>Rp. <?php echo number_format($row->total_investTambak, 0)?>,-</p>
                                 </div>
                                 <div class="col-md-8">
                                     <h3 class="to-animate" style="text-align: center;">Perhitungan Keuntungan</h3>
@@ -224,18 +249,16 @@
                             <hr class="to-animate" style="margin-top: -20px;">
                             <!--<form action="<?php echo site_url('AgiFishInvest/agiFishInvestStep2');?>" method="post" class="to-animate">
                                 -->
-                                <form method="post" class="to-animate"> 
+                                <form action="<?php echo site_url('AgiFishInvest/agiFishInvestStep2');?>" method="post" class="to-animate"> 
                                 <div class="row">
                                     <div class="col-md-12" style="margin-top: -20px;">
                                         <label style="font-size: 17px;">Pilih nominal invest: </label>
                                         <div class="form-group">
-                                            <input type="hidden" name="namaKolam" id="namaKolam" value="
-                                            <?php 
-                                            if (!empty($namaKolam)) {
-                                                echo $namaKolam;
+                                            <input type="hidden" name="id_tambak" id="id_tambak" value="<?php if (!empty($kolam)) {foreach ($kolam->result() as $row) {echo $row->id_tambak;}
                                             }else{
                                                 echo null;
                                             }?>">
+                                            <input type="hidden" name="total_investTambak" id="total_investTambak" value="<?php foreach ($kolam->result() as $row){echo $row->total_investTambak;}?>">
                                             <select name="modalInvestasi" id="modalInvestasi" class="form-control">
                                             <option value="200000">Rp. 200.000,-</option>
                                             <option value="400000">Rp. 400.000,-</option>
@@ -261,24 +284,23 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <!--
+                                            
                                             <button type="submit" name="submit" id="submit" class="btn btn-info" style="margin-top: 2%"><span class="fa fa-rocket"></span> Lanjutkan</button>
-                                            -->
+                                            
                                          </div>
                                     </div>
                                 </div>
                             </form>
-                            <button data-toggle="modal" data-target="#myModal" name="submit" id="submit" class="btn btn-info to-animate" style="margin-top: 2%"><span class="fa fa-rocket"></span> Lanjutkan</button>
-                                       
+                            <!--<button data-toggle="modal" data-target="#myModal" name="submit" id="submit" class="btn btn-info to-animate" style="margin-top: 2%"><span class="fa fa-rocket"></span> Lanjutkan</button>-->
                             <!-- Modal -->
                             <div class="modal  fade" id="myModal" role="dialog">
                                 <div class="modal-dialog">
                                     <!-- Modal content-->
                                     <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Perhatian Sahabat Agivest</h4>
-                                    </div>
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Perhatian Sahabat Agivest</h4>
+                                        </div>
                                         <div class="modal-body">
                                             <p>Maaf, website sedang proses developing. Kami akan mengkabari melalui email anda jika sudah selesai developing</p>
                                         </div>
@@ -289,6 +311,10 @@
                                 </div>
                             </div>
                         </div>
+                        <?php 
+                            }  
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
@@ -313,12 +339,14 @@
                         var hitung = hasilPanen - totalInvest;
                         var hitung2 = hitung * 0.6;
                         var hitung3 = hitung2 * kepemilikan;
-                        text = "Rp. " + hitung3 + " / Panen";
+                        text = "Rp. " + formatNumber(hitung3) + " / Panen";
                     }
                 };
                 document.getElementById("return-Invest").innerHTML = text;
             }
-   
+            function formatNumber (num) {
+                return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+            }
         </script>
 
         <div id="agivest-footer" role="contentinfo">

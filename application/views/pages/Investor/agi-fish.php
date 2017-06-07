@@ -49,6 +49,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
         <!-- DataTables -->
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adm/plugins/datatables/dataTables.bootstrap.css">
+        <!-- Morris charts -->
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adm/plugins/morris/morris.css">
         <!-- Theme style -->
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adm/dist/css/AdminLTE.min.css">
         <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -186,8 +188,10 @@
                 <section class="content-header">
                     <h1>
                         Dashboard
-                        <small>Investor Dashboard</small>
+                        <small class="label label-danger">Investor Dashboard</small>
+                        <button data-toggle="modal" data-target="#myModal" name="submit" id="submit" class="btn btn-info to-animate"><span class="fa fa-rocket"></span> Pilih Tambak</button>
                     </h1>
+
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
                         <li class="active">Agi-Fish</li>
@@ -196,14 +200,101 @@
 
                 <!-- Main content -->
                 <section class="content">
+                    <input type="hidden" name="pilihInvest" id="pilihInvest" value="<?php echo $pilihInvestasi2;?>">
                     <div class="row">
                         <div class="col-md-6">
+                        <?php
+                            if ($cek_ketTambak == "Y") {
+                                foreach ($ketTambak->result() as $row) {
+                            
+                        ?>
                             <!-- Widget: user widget style 1 -->
                             <div class="box box-widget widget-user-2">
                                 <!-- Add the bg color to the header using any of the bg-* classes -->
                                 <div class="widget-user-header bg-blue">
                                     <div class="widget-user-image">
-                                        <img class="img-circle" src="<?php echo base_url(); ?>assets/images/person-flat.png" alt="User Avatar">
+                                        <img class="img-circle" src="<?php 
+                                        if (empty($row->pictureProfile)) {
+                                        ?>
+                                            echo base_url();/assets/images/person-flat.png
+                                        <?php
+                                        }else{
+                                            echo base_url(); echo $row->pictureProfile;
+                                        }
+                                        ?>" alt="User Avatar">
+                                    </div>
+                                    <!-- /.widget-user-image -->
+                                    <h3 class="widget-user-username"><?php if (empty($row->name)){ echo "-";
+                                        }else{echo $row->name;}?></h3>
+                                    <h5 class="widget-user-desc">Penambak</h5>
+                                </div>
+                                <div class="box-footer no-padding">
+                                    <ul class="nav nav-stacked">
+                                        <li>
+                                        <a href="#">Umur 
+                                            <span class="pull-right">
+                                            <?php 
+                                            if (empty($penambak_umur)){
+                                                echo "-";
+                                            }else{
+                                                echo $penambak_umur;
+                                            }?>
+                                            </span>
+                                        </a>
+                                        </li>
+                                        <li>
+                                        <a href="#">Kolam 
+                                            <span class="pull-right">
+                                            <?php 
+                                            if (empty($row->nameTambak)){ 
+                                                echo "-";
+                                            }else{
+                                                echo $row->nameTambak;
+                                            }
+                                            ?>
+                                            </span>
+                                        </a>
+                                        </li>
+                                        <li>
+                                        <a href="#">Alamat 
+                                        <span class="pull-right">
+                                            <?php 
+                                            if (empty($row->address)){ 
+                                                echo "-";
+                                            }else{
+                                                echo $row->address;
+                                            }
+                                            ?>
+                                        </span>
+                                        </a>
+                                        </li>
+                                        <li style="height: auto;">
+                                        <a href="#">Keterangan<br> 
+                                            <span >
+                                            <?php 
+                                            if (empty($row->biodata)){ 
+                                                echo "-";
+                                            }else{
+                                                echo $row->biodata;
+                                            }
+                                            ?>
+                                                
+                                            </span>
+                                        </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- /.widget-user -->
+                        <?php
+                                }
+                            }else{?>
+                                                        <!-- Widget: user widget style 1 -->
+                            <div class="box box-widget widget-user-2">
+                                <!-- Add the bg color to the header using any of the bg-* classes -->
+                                <div class="widget-user-header bg-blue">
+                                    <div class="widget-user-image">
+                                        <img class="img-circle" src="<?php echo base_url();?>assets/images/person-flat.png" alt="User Avatar">
                                     </div>
                                     <!-- /.widget-user-image -->
                                     <h3 class="widget-user-username">-</h3>
@@ -211,14 +302,38 @@
                                 </div>
                                 <div class="box-footer no-padding">
                                     <ul class="nav nav-stacked">
-                                        <li><a href="#">Umur <span class="pull-right">-</span></a></li>
-                                        <li><a href="#">Kolam <span class="pull-right">-</span></a></li>
-                                        <li><a href="#">Alamat <span class="pull-right">-</span></a></li>
-                                        <li><a href="#">Keterangan <span class="pull-right">-</span></a></li>
+                                        <li>
+                                        <a href="#">Umur 
+                                            <span class="pull-right">-
+                                            </span>
+                                        </a>
+                                        </li>
+                                        <li>
+                                        <a href="#">Kolam 
+                                            <span class="pull-right">-
+                                            </span>
+                                        </a>
+                                        </li>
+                                        <li>
+                                        <a href="#">Alamat 
+                                        <span class="pull-right">-
+                                        </span>
+                                        </a>
+                                        </li>
+                                        <li style="height: auto;">
+                                        <a href="#">Keterangan 
+                                            <span class="pull-right">-
+                                            </span>
+                                        </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
                             <!-- /.widget-user -->
+                        <?php
+                            }
+                        ?>
+
                         </div>
                         <div class="col-md-6 col-xs-12">
                             <div class="box">
@@ -226,27 +341,13 @@
                                     <h3 class="box-title">Kepemilikan Kolam</h3>
                                 </div>
                                 <!-- /.box-header -->
-                                <div class="box-body">
-                                    <table class="table table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <th style="width: 10px">No</th>
-                                                <th>Nama</th>
-                                                <th>Kepemilikan</th>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="box-body chart-responsive">
+                                    <div class="box-body chart-responsive">
+                                      <div class="chart" id="sales-chart" style="height: 300px; position: relative;"></div>
+                                      <p><b>Note:</b> Satuan dalam % </p>
+                                    </div>
                                 </div>
                                 <!-- /.box-body -->
-                                <div class="box-footer clearfix">
-                                    <ul class="pagination pagination-sm no-margin pull-right">
-                                        <li><a href="#">«</a></li>
-                                        <li><a href="#">1</a></li>
-                                        <li><a href="#">2</a></li>
-                                        <li><a href="#">3</a></li>
-                                        <li><a href="#">»</a></li>
-                                    </ul>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -258,7 +359,15 @@
 
                                 <div class="info-box-content">
                                     <span class="info-box-text">Periode</span>
-                                    <span class="info-box-number">-</span>
+                                    <span class="info-box-number"><?php 
+                                        if ($cek_ketTambak == "N") {
+                                            echo "-";
+                                        }else{
+                                            foreach ($ketTambak->result() as $row) {
+                                                echo $row->progresTambak;
+                                            }
+                                        }
+                                    ?></span>
                                 </div>
                                 <!-- /.info-box-content -->
                             </div>
@@ -270,8 +379,18 @@
                                 <span class="info-box-icon bg-red"><i class="fa fa-money"></i></span>
 
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Investasi</span>
-                                    <span class="info-box-number">Rp. 0,-</span>
+                                    <span class="info-box-text">Sisa Uang</span>
+                                    <span class="info-box-number">Rp. <?php
+                                        if ($cek_uang == "N") {
+                                            echo "-";
+                                         }else{
+                                            if (empty($uangSisa)) {
+                                                echo "-";
+                                            }else{
+                                                echo number_format($uangSisa);
+                                            }
+                                         }
+                                    ?></span>
                                 </div>
                                 <!-- /.info-box-content -->
                             </div>
@@ -288,7 +407,19 @@
 
                                 <div class="info-box-content">
                                     <span class="info-box-text">Pakan (kg)</span>
-                                    <span class="info-box-number">-</span>
+                                    <span class="info-box-number">
+                                    <?php 
+                                        if ($cek_totalPakan == "N") {
+                                            echo "-";
+                                        }else{
+                                            if ($totalPakan == "") {
+                                                echo "-";
+                                            }else{
+                                            echo $totalPakan;
+                                            }
+                                        }
+                                    ?>    
+                                    </span>
                                 </div>
                                 <!-- /.info-box-content -->
                             </div>
@@ -301,7 +432,21 @@
 
                                 <div class="info-box-content">
                                     <span class="info-box-text">Ikan</span>
-                                    <span class="info-box-number">-</span>
+                                    <span class="info-box-number">
+                                        <?php 
+                                        if (empty($kondisi_ikan) == true) {
+                                            echo "-";
+                                        }else{
+                                            if (empty($kondisi_ikan->result())) {
+                                                echo "-";
+                                            }else{
+                                                foreach ($kondisi_ikan->result() as $row) {
+                                                    echo $row->condition_ikan;
+                                                }
+                                            }
+                                        }
+                                        ?>   
+                                    </span>
                                 </div>
                                 <!-- /.info-box-content -->
                             </div>
@@ -311,7 +456,7 @@
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title">Pakan</h3>
+                                    <h3 class="box-title"><i class="fa fa-balance-scale"></i> Laporan Pakan</h3>
                                 </div>
                                 <!-- /.box-header -->
                                 <div class="box-body">
@@ -319,11 +464,32 @@
                                         <thead>
                                             <tr>
                                                 <th>Tanggal</th>
-                                                <th>Pakan</th>
+                                                <th>Pakan (Kg)</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr></tr>
+                                            <?php 
+                                                if ($cek_pakan == "N") {
+                                                    echo "<tr>";
+                                                        echo "<td>-</td>";
+                                                        echo "<td>-</td>";
+                                                    echo "</tr>";
+                                                }else{
+                                                    if (!empty($pakan)) {
+                                                        foreach ($pakan->result() as $row) {
+                                                            echo "<tr>";
+                                                                echo "<td>$row->tanggal_pakan</td>";
+                                                                echo "<td>$row->jmlhKg_pakan</td>";
+                                                            echo "</tr>";
+                                                        }
+                                                    }else{
+                                                        echo "<tr>";
+                                                            echo "<td>-</td>";
+                                                            echo "<td>-</td>";
+                                                        echo "</tr>";
+                                                    }
+                                                }
+                                            ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -331,19 +497,59 @@
                             </div>
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title">Ikan</h3>
+                                    <h3 class="box-title"><i class="fa fa-anchor"></i> Laporan Kondisi Tambak</h3>
                                 </div>
                                 <!-- /.box-header -->
                                 <div class="box-body">
-                                    <table id="example1" class="table table-bordered table-hover">
+                                    <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
                                                 <th>Tanggal</th>
+                                                <th>Ikan Mati (Ekor)</th>
+                                                <th>Deskripsi</th>
                                                 <th>Kondisi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr></tr>
+                                            <?php 
+                                                if ($cek_ikan == "N") {
+                                                    echo "<tr>";
+                                                        echo "<td>-</td>";
+                                                        echo "<td>-</td>";
+                                                        echo "<td>-</td>";
+                                                        echo "<td>-</td>";
+                                                    echo "</tr>";
+                                                }else{
+                                                    if (!empty($ikan)) {
+                                                        foreach ($ikan->result() as $row) {?>
+                                                        <tr>
+                                                        <td><?php echo $row->date_ikan?></td>
+                                                        <td><?php echo $row->dead_ikan?></td>
+                                                        <td><?php echo $row->desc_ikan?></td>
+                                                        <?php
+                                                            if ($row->condition_ikan == "Excelent") {
+                                                                echo "<td><span class='label label-success'> $row->condition_ikan</span></td>";
+                                                            }elseif ($row->condition_ikan == "Good") {
+                                                                echo "<td><span class='label label-info'> $row->condition_ikan</span></td>";
+                                                            }elseif ($row->condition_ikan == "Bad") {
+                                                                echo "<td><span class='label label-danger'> $row->condition_ikan</span></td>";
+                                                            }else{
+                                                                echo "<td><span class='label label-warning'> $row->condition_ikan</span></td>";
+                                                            }
+                                                        ?>
+                                                        </tr>
+                                                    <?php
+                                                        }
+                                                    }else{
+                                                        echo "<tr>";
+                                                            echo "<td>-</td>";
+                                                            echo "<td>-</td>";
+                                                            echo "<td>-</td>";
+                                                            echo "<td>-</td>";
+                                                        echo "</tr>";
+                                                    }
+                                                }
+                                            ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -351,19 +557,41 @@
                             </div>
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title">Keuangan</h3>
+                                    <h3 class="box-title"><i class="fa fa-money"></i> Laporan Keuangan</h3>
                                 </div>
                                 <!-- /.box-header -->
                                 <div class="box-body">
-                                    <table id="example1" class="table table-bordered table-hover">
+                                    <table id="example3" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
                                                 <th>Tanggal</th>
+                                                <th>Sisa Uang</th>
                                                 <th>Pengeluaran</th>
+                                                <th>Deskripsi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr></tr>
+                                            <?php
+                                                if (empty($uang)) {
+                                                    echo "<tr>";
+                                                        echo "<td>-</td>";
+                                                        echo "<td>-</td>";
+                                                        echo "<td>-</td>";
+                                                        echo "<td>-</td>";
+                                                    echo "</tr>";
+                                                }else{
+                                                    foreach ($uang->result() as $row) {?>
+                                                        <tr>
+                                                            <td><?php echo $row->date_uang;?></td>
+                                                            <td>Rp. <?php echo number_format($row->save_uang);?></td>
+                                                            <td>Rp. <?php echo number_format($row->buy_uang);?></td>
+                                                            <td><?php echo $row->desc_uang;?></td>
+                                                        </tr>
+                                                    <?php
+                                                    }
+                                                }
+                                            ?>
+                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -379,6 +607,68 @@
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
+
+            <!-- Modal -->
+            <?php
+                if (!empty($pilihInvestasi) == true){?>
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                    <h4 class="modal-title">Pilih Investasi</h4>
+                            </div>
+                            <div class="modal-body">
+                                <table id="example3" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Nama Tambak</th>
+                                            <th>Pilih</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                <?php $i=1;
+                                    foreach ($pilihInvestasi->result() as $row) {?>
+                                        <tr>
+                                            <th><?php echo $i?></th>
+                                            <th><?php echo $row->nameTambak?></th>
+                                            <th><?php echo "<a href='http://localhost/agivest/Investor/agiFish1/$row->id_tambak' width='100%' class='btn btn-large btn-success'> Pilih </a>"?></th>
+                                        </tr>
+                                <?php
+                                    $i++;
+                                    }
+                                ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php
+                }else{?>
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Opps.. Kamu belum berinvestasi</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>Klik link dibawah ini untuk mulai berinvestasi</p>
+                            </div>
+                            <div class="modal-footer" >
+                                <a width="100%" href="<?php echo site_url("AgiFishInvest");?>" type="button" class="btn btn-success" >Mulai berinvestasi</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php
+                }
+            ?>
             <footer class="main-footer">
                 <strong>Copyright &copy; 2016 <a href="http://agivest.com">Agivest</a>.</strong> All rights
                 reserved.
@@ -401,15 +691,44 @@
         <script src="<?php echo base_url(); ?>assets/adm/dist/js/app.min.js"></script>
         <!-- AdminLTE for demo purposes -->
         <script src="<?php echo base_url(); ?>assets/adm/dist/js/demo.js"></script>
+        <!-- Moris -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adm/plugins/morris/morris.min.js"></script>
         <!-- page script -->
-        <script>
+        <script>         
+            $(document).ready(function(){
+                //DONUT CHART
+                var donut = new Morris.Donut({
+                    element: 'sales-chart',
+                    resize: true,
+                    data: <?php echo $chart_data;?>,
+                    hideHover: 'auto'
+                });
+
+            });
+
+            $(window).on('load',function(){
+                if ($('#pilihInvest').val() == "Y"){
+                    $('#myModal').modal('show');
+                }
+            });
+
             $('myData').DataTable();
+
             $(function() {
-                $("#example1").DataTable();
+                $('#example1').DataTable();
                 $('#example2').DataTable({
                     "paging": true,
-                    "lengthChange": false,
-                    "searching": false,
+                    "lengthChange": true,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false
+                });
+                $('#example3').DataTable({
+                    "paging": true,
+                    "lengthChange": true,
+                    "searching": true,
                     "ordering": true,
                     "info": true,
                     "autoWidth": false
