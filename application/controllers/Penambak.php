@@ -41,42 +41,64 @@ class Penambak extends CI_Controller {
             $this->load->view('pages/Penambak/penambak', $data); 
 
         }else{
+            
             //Tambak
             $tambak = $this->Home_model->getData("fytambak", "where statusTambak = 'A' ");
-            $namaTambak = "";
+            //Tambak2
+            $tambak2 = $this->Home_model->getData("fytambak", "where statusTambak = 'N' ");
             $id_tambak = "";
-            $jumlahInvest = "";
-            if (!empty($tambak)){
+            $id_tambak2 = "";
+            $namaTambak = "";
+            $namaTambak2 = "";
+            $total_investTambak = "";
+            $date2 = "";
+            $foto = "";
+            $foto2 = "";
+            if (!empty($tambak)) {
                 foreach ($tambak->result() as $row) {
                     $namaTambak = $row->nameTambak;
-                    $jumlahInvest = $row->jumlahInvest;
                     $id_tambak = $row->id_tambak;
+                    $total_investTambak = $row->total_investTambak;
+                    $foto = $row->pictureTambak;
+                }
+            }
+
+            if (!empty($tambak2)) {
+                foreach ($tambak2->result() as $row) {
+                    $namaTambak2 = $row->nameTambak;
+                    $foto2 = $row->pictureTambak;
+                    $id_tambak2 = $row->id_tambak;
+                    $date2 = $row->date;
                 }
             }
             //Statistik
             $statistik = $this->Home_model->countUser();
             //Luas Tambak
             $luasTambak = $this->Home_model->countLuas();
-            //Total Invest
-            $totalInvest = $this->Home_model->countInvest();
+            //Total Penambak
+            $countPenambak = $this->Home_model->countPenambak();
             //get Temporary tambak
-             $tempMoney = $this->Home_model->getMoney("fyinvest", "where statusInvest = 'A' AND id_tambak = '$id_tambak'");
+            $tempMoney = $this->Home_model->getMoney("fyinvest", "where statusInvest = 'A' AND id_tambak = '$id_tambak'");
             $hitungInvest = 0;
             if (!empty($tempMoney)) {
                 foreach ($tempMoney->result() as $row) {
                     $hitungInvest += $row->money;
                 }
-            }else{
+            } else {
                 $hitungInvest = 0;
             }
             //Update Temporary Tambak
-            $updateTambak = $this->Home_model->updateTambak($id_tambak,$hitungInvest);
+            $updateTambak = $this->Home_model->updateTambak($id_tambak, $hitungInvest);
 
+            $data['date'] = $date2;
+            $data['foto'] = $foto;
+            $data['foto2'] = $foto2;
+            $data['namaTambak2'] = $namaTambak2;
             $data['tambak'] = $tambak;
             $data['Investor'] = $statistik;
             $data['luasTambak'] = $luasTambak;
-            $data['totalInvest'] = $totalInvest;
-            
+            $data['countPenambak'] = $countPenambak;
+
             $this->load->view('pages/home', $data);
         }
     } 

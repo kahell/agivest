@@ -93,7 +93,7 @@ class Login extends CI_Controller {
               redirect('Penambak', 'refresh');
             }elseif ($statusUser == '2') {
               $this->session->set_userdata('adminSession', $sess_array);
-              redirect('Admin', 'refresh');
+              redirect('HelfiAdm', 'refresh');
             }else{
               $this->session->set_flashdata('gagalmasuk','Username atau Password anda salah');                   
               $redirect(base_url().'Login', 'refresh');
@@ -163,7 +163,7 @@ class Login extends CI_Controller {
               redirect('Penambak', 'refresh');
             }elseif ($statusUser == '2') {
               $this->session->set_userdata('adminSession', $sess_array);
-              redirect('Admin', 'refresh');
+              redirect('HelfiAdm', 'refresh');
             }else{
               $this->session->set_flashdata('gagalmasuk','Username atau Password anda salah');                   
               $redirect(base_url().'Login', 'refresh');

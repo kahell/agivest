@@ -77,7 +77,7 @@ Class Home_model extends CI_Model{
 	}
 
 	public function getSelectData($select, $tableName, $where){
-		$result = $this->db->query("select '$select' from $tableName $where");
+		$result = $this->db->query("select $select from $tableName $where");
 		return $result;
 	}
 }

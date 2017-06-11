@@ -155,7 +155,7 @@
                     <ul class="sidebar-menu">
                         <li class="header">MAIN NAVIGATION</li>
                         <li class="active treeview">
-                            <a href="<?php echo site_url('Investor'); ?>">
+                            <a href="<?php echo site_url('Penambak'); ?>">
                                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                             </a>
                         </li>
