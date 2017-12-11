@@ -4,7 +4,9 @@
 ## Agivest 
 Agivest is a populous investment platform with a Crowd Investment system that allows everyone to invest from a hundred thousand rupiah.
 ```
-Select the course you want and book the course with one click
+Select the comodities you want invest
+Input nominal invest
+Transfer Money
 ```
 ## Architecture
 MVC (Model View Controller) - Code Igniter
